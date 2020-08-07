@@ -244,7 +244,7 @@ void MeshCut::CalcBanArea(int Dn, std::string Metric, double Alpha, double shrin
 		}
 		if (max_region_area < Alpha * MC.AVG_FA * MC.NFaces)
 		{
-			Dn = std::floor(shrinkRate * Dn);
+			Dn = static_cast<int>(std::floor(shrinkRate * Dn));
 			printf("Shrink in Mcut2");
 		}
 		else

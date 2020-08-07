@@ -16,7 +16,8 @@ void PointSampling::Set(std::string method_id)
 	if (method == "Dijkstra") { printf("SampleMethod: Dijkstra\n"); }
 	else if (method == "GeodesicDistance") { printf("SampleMethod: GeodesicDistance\n"); }
 	else if (method == "RealDistance") { printf("SampleMethod: RealDistance\n"); }
-	std::default_random_engine e(time(NULL));
+	std::random_device rd;
+	std::default_random_engine e(rd());
 	std::uniform_int_distribution<unsigned> u(0, MCache.NVertices);
 	this->first_point = u(e);
 	printf("%s%d\n", "Generate Random FirstPoint:", this->first_point);

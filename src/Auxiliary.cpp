@@ -1,21 +1,29 @@
 #include "Auxiliary.h"
 
 Option::Option(std::string modelPath, std::string optPath)
+	:modelPath(modelPath),
+	modelName(modelName)
 {
-	this->modelPath = modelPath;
-	this->modelName = modelPath.substr(modelPath.find_last_of('\/') + 1, modelPath.length());//for windows
+	auto slash = this->modelName.find_last_of("\\/");
+	if (slash != std::string::npos)
+	{
+		this->modelName = this->modelName.substr(slash + 1);
+	}
 	std::ifstream input(optPath);
 	std::string line, key, value;
-	int position;
+	auto position = std::string::npos;
 	while (std::getline(input, line))
 	{
-		if (line[0] == '#')
-			continue;
+		position = line.find_first_of('#');
+		if (position != std::string::npos)
+		{
+			line = line.substr(0, position);
+		}
 		position = line.find("=");
 		if (position == line.npos)
 			continue;
-		key = line.substr(0, position);
-		value = line.substr(position + 1, line.length());
+		std::istringstream(line.substr(0, position)) >> key;
+		value = line.substr(position + 1);
 		if (key == "PointSampling_method")
 			PS_method = value;
 		else if (key == "PointFinding_method")
@@ -91,7 +99,7 @@ void Algorithm::Dijkstra_group(MeshCache& MC, std::vector<int>& lmk)
 		std::vector<int> is_lmk(MC.NVertices, 0);
 		for (int j = i; j < lmk.size(); j++)
 			is_lmk[lmk[j]] = 1;
-		int count = lmk.size() - i;
+		int count = static_cast<int>(lmk.size()) - i;
 		int s_p = lmk[i];
 		std::vector<int>& is_visited = MC.DijkstraIsVisited[s_p];
 		std::vector<double>& distance = MC.Vd[s_p];
@@ -148,7 +156,7 @@ void Algorithm::Dijkstra_group(MeshCache& MC, std::vector<int>& lmk)
 void Algorithm::Kruskal(MeshCache& MCache, std::vector<int>& lmk, std::vector<int>& cutvertex, std::vector<int>& cutedge)
 {
 	std::sort(lmk.begin(), lmk.end());
-	int nv = lmk.size();
+	int nv = static_cast<int>(lmk.size());
 	std::vector<int> spanning_tree_current(nv);
 	std::priority_queue<PathInfo> EdgeInfo;
 	for (int i = 0; i < lmk.size(); i++)
@@ -211,7 +219,7 @@ void Algorithm::Kruskal(MeshCache& MCache, std::vector<int>& lmk, std::vector<in
 
 void Algorithm::Kruskal(std::vector<int>& lmk, std::priority_queue<PathInfo> que, std::vector<PathInfo>& Res)
 {
-	int nv = lmk.size();
+	int nv = static_cast<int>(lmk.size());
 	std::vector<int> spanning_tree_current(nv);
 	std::set<int> reV, reE;
 

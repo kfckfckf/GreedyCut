@@ -2,9 +2,9 @@
 
 MeshCache::MeshCache(Mesh& mesh)
 {
-	NVertices = mesh.n_vertices();
-	NEdges = mesh.n_edges();
-	NFaces = mesh.n_faces();
+	NVertices = static_cast<int>(mesh.n_vertices());
+	NEdges = static_cast<int>(mesh.n_edges());
+	NFaces = static_cast<int>(mesh.n_faces());
 
 	Vd.resize(NVertices);
 	DijkstraIsVisited.resize(NVertices);

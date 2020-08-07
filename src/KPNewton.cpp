@@ -106,7 +106,7 @@ void KPNewton::Tutte()
 	}
 	pardiso_it.push_back(static_cast<int>(pardiso_jt.size()));
 	solver->num = static_cast<int>(nv);
-	solver->nnz = pardiso_jt.size();
+	solver->nnz = static_cast<int>(pardiso_jt.size());
 
 	solver->pardiso_init();
 	solver->factorize();
@@ -160,7 +160,7 @@ void KPNewton::PrepareDataFree(void)
 	for (int i = 0; i < tmp_ja.size(); i++)
 	{
 		ia.push_back(cnt);
-		cnt += tmp_ja[i].size();
+		cnt += static_cast<int>(tmp_ja[i].size());
 		ja.insert(ja.end(), tmp_ja[i].begin(), tmp_ja[i].end());
 
 	}
@@ -188,13 +188,13 @@ void KPNewton::PrepareDataFree(void)
 	for (int i = 0; i < tmp_ja.size(); i++)
 	{
 		ia.push_back(cnt);
-		cnt += tmp_ja[i].size();
+		cnt += static_cast<int>(tmp_ja[i].size());
 		ja.insert(ja.end(), tmp_ja[i].begin(), tmp_ja[i].end());
 	}
 	ia.push_back(static_cast<int>(ja.size()) + 1);
 	solver->a.resize(ja.size());
 	solver->num = static_cast<int>(2 * mesh.n_vertices());
-	solver->nnz = ja.size();
+	solver->nnz = static_cast<int>(ja.size());
 
 	std::vector<std::unordered_map<int, int>> spid(2 * nv);
 	size_t j = 0;
